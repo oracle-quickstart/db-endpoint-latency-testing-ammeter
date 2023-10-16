@@ -81,9 +81,9 @@ Python >= 3.6.8
 ## Clone Repo
 
 ```
-git clone https://github.com/shadabshaukat/DELTAV2.git
+git clone https://github.com/shadabshaukat/DELTAV2.git](https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
 
-cd DELTAV2/
+cd db-endpoint-latency-testing-ammeter/
 ```
 
 ## Install Python packages
@@ -95,9 +95,9 @@ sudo pip3 install -r requirements.txt
 
 Set the below credentials in the delta.py script
 ```
-oracle_un = 'your_user'
-oracle_pw = 'your_password'
-oracle_cs = 'your_connection_string'
+export oracle_un = 'your_user'
+export oracle_pw = 'your_password'
+export oracle_cs = 'your_connection_string'
 ```
 Run
 ```
