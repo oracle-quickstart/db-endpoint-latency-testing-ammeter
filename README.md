@@ -81,7 +81,7 @@ Python >= 3.6.8
 ## Clone Repo
 
 ```
-git clone https://github.com/shadabshaukat/DELTAV2.git](https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
+git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
 
 cd db-endpoint-latency-testing-ammeter/
 ```
