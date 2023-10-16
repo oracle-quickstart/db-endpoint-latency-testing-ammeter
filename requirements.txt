@@ -1,0 +1,7 @@
+requests
+oracledb
+numpy
+matplotlib
+pymysql
+pyodbc
+psycopg2-binary
