@@ -78,6 +78,13 @@ cd db-endpoint-latency-testing-ammeter/
 
 ## Install Python packages
 ```
+## On CentOS or Oracle Linux or Redhat Linux
+sudo yum install postgresql postgresql-devel python36-devel
+
+## On Ubuntu
+sudo apt install libpq-dev python3.x-dev
+
+## Install requirements
 sudo pip3 install -r requirements.txt
 ```
 
