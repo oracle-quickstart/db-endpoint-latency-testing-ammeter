@@ -139,3 +139,16 @@ python3 delta.py --db url --interval 5 --period 60 --csvoutput url_latency.csv
 ```
 
 ![latency_plot](https://user-images.githubusercontent.com/39692236/227111833-86b9666b-55f3-4b71-a190-25a932eca487.png)
+
+
+# Test Cases for Each DB and URL
+
+```
+python3 delta.py --db oracle --interval 3 --period 5 --csvoutput oracle_latency.csv
+
+python3 delta.py --db mysql --interval 3 --period 5 --csvoutput mysql_latency.csv
+
+python3 delta.py --db postgresql --interval 3 --period 5 --csvoutput postgres_latency.csv
+
+python3 delta.py --db url --interval 3 --period 5 --csvoutput url_latency.csv
+```
