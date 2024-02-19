@@ -11,9 +11,8 @@ import requests
 import matplotlib.pyplot as plt
 
 import oracledb
-#import psycopg2
-#import pymysql
-#import pyodbc
+import psycopg2
+import pymysql
 
 if cryptography_version < "3.4":
     warnings.filterwarnings("ignore", category=UserWarning, message=".*will be forbidden in the future.*")
@@ -21,33 +20,27 @@ if cryptography_version < "3.4":
 query_times = []
 
 # Oracle Database credentials
-oracle_un = 'your_username'
+oracle_un = 'admin'
 oracle_pw = 'your_password'
-oracle_cs = 'your_connection_string'
+oracle_cs = '(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1521)(host=adb.uk-london-1.oraclecloud.com))(connect_data=(service_name=m*******_demoadb_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=yes)))'
 
 # PostgreSQL credentials
-pgsql_un = 'your_username'
+pgsql_un = 'postgres'
 pgsql_pw = 'your_password'
-pgsql_host = 'your_host'
-pgsql_port = 'your_port'
-pgsql_db = 'your_database'
+pgsql_host = 'localhost'
+pgsql_port = '5432'
+pgsql_db = 'postgres'
 
 # MySQL credentials
-mysql_un = 'your_username'
+mysql_un = 'mysql'
 mysql_pw = 'your_password'
-mysql_host = 'your_host'
-mysql_port = 'your_port'
-mysql_db = 'your_database'
+mysql_host = 'localhost'
+mysql_port = '3306'
+mysql_db = 'mysql'
 
-# SQL Server credentials
-sql_server_un = 'your_username'
-sql_server_pw = 'your_password'
-sql_server_host = 'your_host'
-sql_server_port = 'your_port'
-sql_server_db = 'your_database'
 
 # URL for testing
-test_url = 'https://www.google.com.au'
+test_url = 'https://www.google.com'
 
 def calculate_p99_latency():
     if len(query_times) > 0:
