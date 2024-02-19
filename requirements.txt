@@ -1,6 +1,5 @@
 requests
 oracledb
 numpy
-matplotlib
 pymysql
 psycopg2-binary
