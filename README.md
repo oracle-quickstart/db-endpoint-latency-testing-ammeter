@@ -112,6 +112,21 @@ Run
 python3 delta.py --db mysql --interval 5 --period 60 --csvoutput mysql_latency.csv
 ```
 
+# Calculate Latency for PostgreSQL 
+
+Set the below credentials in the delta.py script
+```
+pgsql_un = 'postgres'
+pgsql_pw = 'your_password'
+pgsql_host = 'localhost'
+pgsql_port = '5432'
+pgsql_db = 'postgres'
+```
+Run
+```
+python3 delta.py --db postgresql --interval 5 --period 60 --csvoutput postgres_latency.csv
+```
+
 
 # Calculate URL Latency 
 
