@@ -101,7 +101,6 @@ Run
 python3 delta.py --db oracle --interval 5 --period 60 --csvoutput oracle_latency.csv
 ```
 
-![latency_plot](https://user-images.githubusercontent.com/39692236/227111334-baabf052-f386-4d61-b5ee-eb1be289007c.png)
 
 # Calculate Latency for MySQL 
 
@@ -145,7 +144,6 @@ Run
 python3 delta.py --db url --interval 5 --period 60 --csvoutput url_latency.csv
 ```
 
-![latency_plot](https://user-images.githubusercontent.com/39692236/227111833-86b9666b-55f3-4b71-a190-25a932eca487.png)
 
 
 # Test Cases for Each DB and URL
