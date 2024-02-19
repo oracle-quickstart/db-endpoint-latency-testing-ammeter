@@ -98,7 +98,7 @@ oracle_cs='your_connection_string'
 ```
 Run
 ```
-python3 delta.py --db oracle --interval 5 --period 60 --csvoutput oracle_latency.csv
+python3 delta.py --db oracle --interval 3 --period 5 --csvoutput oracle_latency.csv
 ```
 
 
@@ -114,7 +114,7 @@ mysql_db = 'mysql'
 ```
 Run
 ```
-python3 delta.py --db mysql --interval 5 --period 60 --csvoutput mysql_latency.csv
+python3 delta.py --db mysql --interval 3 --period 5 --csvoutput mysql_latency.csv
 ```
 
 # Calculate Latency for PostgreSQL 
@@ -129,7 +129,7 @@ pgsql_db = 'postgres'
 ```
 Run
 ```
-python3 delta.py --db postgresql --interval 5 --period 60 --csvoutput postgres_latency.csv
+python3 delta.py --db postgresql --interval 3 --period 5 --csvoutput postgres_latency.csv
 ```
 
 
@@ -141,7 +141,7 @@ test_url = 'your_url'
 ```
 Run
 ```
-python3 delta.py --db url --interval 5 --period 60 --csvoutput url_latency.csv
+python3 delta.py --db url --interval 3 --period 5 --csvoutput url_latency.csv
 ```
 
 
