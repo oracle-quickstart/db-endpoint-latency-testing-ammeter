@@ -32,11 +32,6 @@ The tool uses the oracledb python package to connect to Oracle databases and exe
 
 - Oracle Database On-Premise
 
-### URL - HTTPS | HTTP 📌 :
-
-- Check Public or Private URLs for latency
-
-## Coming Soon
 
 ### Postgres >= 11 📌 :
 
@@ -59,6 +54,10 @@ The tool uses the oracledb python package to connect to Oracle databases and exe
 
 - MySQL On-Premise
 
+
+### URL - HTTPS | HTTP 📌 :
+
+- Check Public or Private URLs for latency
 
 
 # Deploy
