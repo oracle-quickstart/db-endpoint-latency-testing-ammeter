@@ -95,9 +95,9 @@ sudo pip3 install -r requirements.txt
 
 Set the below credentials in the delta.py script
 ```
-export oracle_un='your_user'
-export oracle_pw='your_password'
-export oracle_cs='your_connection_string'
+oracle_un='your_user'
+oracle_pw='your_password'
+oracle_cs='your_connection_string'
 ```
 Run
 ```
