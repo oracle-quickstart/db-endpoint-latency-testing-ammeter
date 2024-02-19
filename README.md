@@ -1,4 +1,4 @@
-# Db-Endpoint-Latency-Testing-Ammeter (DELTA)
+# DB(D)  Endpoint(E)  Latency(L)  Testing(T)  Ammeter(A) 
 
 ## DELTA 
 
