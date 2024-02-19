@@ -97,6 +97,21 @@ python3 delta.py --db oracle --interval 5 --period 60 --csvoutput oracle_latency
 
 ![latency_plot](https://user-images.githubusercontent.com/39692236/227111334-baabf052-f386-4d61-b5ee-eb1be289007c.png)
 
+# Calculate Latency for MySQL 
+
+Set the below credentials in the delta.py script
+```
+mysql_un = 'mysql'
+mysql_pw = 'your_password'
+mysql_host = 'localhost'
+mysql_port = '3306'
+mysql_db = 'mysql'
+```
+Run
+```
+python3 delta.py --db mysql --interval 5 --period 60 --csvoutput mysql_latency.csv
+```
+
 
 # Calculate URL Latency 
 
