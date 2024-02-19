@@ -60,15 +60,6 @@ The tool uses the oracledb python package to connect to Oracle databases and exe
 - MySQL On-Premise
 
 
-### SQL Server >= 2014 📌 : 
-
-- Amazon RDS SQL Server
-
-- Azure SQL Server
-
-- SQL Server On-Premise
-
-
 
 # Deploy
 
