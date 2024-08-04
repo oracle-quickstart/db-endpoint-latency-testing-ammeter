@@ -1,5 +1,6 @@
 requests
-oracledb<=1.4.2
-numpy<=1.19.5
-pymysql<=1.0.2
-psycopg2-binary<=2.9.8
+oracledb
+numpy
+pymysql
+psycopg2-binary
+matplotlib
