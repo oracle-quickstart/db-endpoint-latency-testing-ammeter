@@ -74,6 +74,10 @@ Python >= 3.6.8
 git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
 
 cd db-endpoint-latency-testing-ammeter/
+
+python3 -m venv db-endpoint-latency-testing-ammeter
+
+source db-endpoint-latency-testing-ammeter/bin/activate
 ```
 
 ## Install Python packages
@@ -85,7 +89,7 @@ sudo yum install postgresql postgresql-devel python36-devel
 sudo apt install libpq-dev python3.x-dev
 
 ## Install requirements
-sudo pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 # Calculate Latency for Oracle DB
