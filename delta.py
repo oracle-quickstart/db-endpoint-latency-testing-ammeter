@@ -64,33 +64,25 @@ def calculate_p99_latency():
         print("No queries were executed.")
 
 def oracle_ping(interval, csvfile):
-    # Establish a new database connection
+    
     conn = oracledb.connect(user=oracle_un, password=oracle_pw, dsn=oracle_cs)
-
-    # Get cursor object
     cursor = conn.cursor()
-
-    # Get session information
     cursor.execute("select sys_context('USERENV','SID'), sys_context('USERENV','INSTANCE') from dual")
     sid, instance = cursor.fetchone()
 
-    # Execute the query and time it
     t0 = time.perf_counter()
     cursor.execute("select 1 from dual")
     cursor.fetchall()
     t1 = time.perf_counter()
 
-    # Calculate the timings
     query_time = (t1 - t0) * 1000
     query_times.append(query_time)
 
-    # Write the timings to the CSV file
     if csvfile is not None:
         writer = csv.writer(csvfile)
         timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         writer.writerow([timestamp, query_time, sid, instance])
 
-    # Close the cursor and the connection
     cursor.close()
     conn.close()
 
@@ -183,7 +175,7 @@ def url_ping(interval, csvfile):
 
 
 
-# Parse command line arguments
+# cmd-line arguements
 parser = argparse.ArgumentParser(description="Connect and run a query.")
 parser.add_argument("--interval", type=float, help="interval between each query, default 1", default=1)
 parser.add_argument("--period", type=int, help="runtime in seconds; default 60", default=60)
@@ -191,7 +183,7 @@ parser.add_argument("--csvoutput", help="write timings to the named CSV file")
 parser.add_argument("--db", choices=['oracle', 'postgresql', 'mysql', 'sqlserver', 'url'], required=True, help="specify the database or url to test")
 args = parser.parse_args()
 
-# Open the CSV file if specified
+
 if args.csvoutput is not None:
     csvfile = open(args.csvoutput, "w", newline="")
     writer = csv.writer(csvfile)
@@ -199,11 +191,11 @@ if args.csvoutput is not None:
 else:
     csvfile = None
 
-# Calculate the start time and the end time
+
 start_time = time.perf_counter()
 end_time = start_time + args.period
 
-# Run the main loop
+# Main loop
 while time.perf_counter() < end_time:
     if args.db == 'oracle':
         oracle_ping(args.interval, csvfile)
@@ -217,7 +209,6 @@ while time.perf_counter() < end_time:
         url_ping(args.interval, csvfile)
     time.sleep(args.interval)
 
-# Calculate and print the final P99 latency
 calculate_p99_latency()
 
 # Plot the latencies on a graph
