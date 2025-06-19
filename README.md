@@ -16,7 +16,6 @@ The tool uses the oracledb python package to connect to Oracle databases and exe
 🐍 DELTA uses Python client for Oracle, MySQL and PostgreSQL to run a query like “SELECT 1” or "SELECT 1 FROM DUAL". You can then specific the number of executions of the query and DELTA calculates the average network round-trip time for all the executions of the query on the remote database. The script also includes error handling to track failed requests. You can also include your own custom queries. 
 
 
-
  ## Databases Supported 🔌 :
 
  
@@ -148,8 +147,6 @@ Run
 python3 delta.py --db url --interval 3 --period 5 --csvoutput url_latency.csv
 ```
 
-
-
 # Test Cases for Each DB and URL
 
 ```
@@ -161,3 +158,18 @@ python3 delta.py --db postgresql --interval 3 --period 5 --csvoutput postgres_la
 
 python3 delta.py --db url --interval 3 --period 5 --csvoutput url_latency.csv
 ```
+
+## Contributing
+
+This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
+
+## Security
+
+Please consult the [security guide](./SECURITY.md) for our responsible security vulnerability disclosure process
+
+## License
+
+Copyright (c) 2023 Oracle and/or its affiliates.
+
+Released under the Apache License Version 2.0, January 2004
+<http://www.apache.org/licenses/>.
