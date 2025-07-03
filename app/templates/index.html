@@ -19,6 +19,9 @@
       .summary-value { font-weight:400; }
       .clear-btn-active { background: #ea1616!important; color:#fff!important; border:1.3px solid #e34434!important; }
       .clear-btn-active:hover { background: #e32e2e!important; color:#fff!important; }
+      .custom-query-group { margin-top: 1.2em; }
+      .custom-sql-label { font-size: 1rem; font-weight: 500; color: #1d2b36; vertical-align: middle; }
+      .custom-sql-box { width: 100%; min-width: 0; font-size: 1.07rem; line-height: 1.38; font-family: "JetBrains Mono", "Fira Mono", Monaco, "Consolas", "Menlo", monospace; border-radius: 8px; border: 1.2px solid #b6c1d7; padding: 10px 13px; background: #fcfcfa; resize: vertical; }
     </style>
 </head>
 <body>
@@ -71,6 +74,14 @@
     <div class="minimal-group">
       <label for="interval">Delay Between Tests (seconds)</label>
       <input type="number" id="interval" name="interval" value="{{ interval|default(1) }}" min="0.1" step="0.1">
+    </div>
+    <div id="custom-sql-area" class="custom-query-group" style="display:none;">
+      <label class="custom-sql-label">
+        <input type="checkbox" id="custom-sql-check" name="use_custom_sql" value="yes" onchange="toggleCustomSQL()" style="vertical-align:middle; margin-right:7px; margin-bottom:2px;">
+        Custom SQL Query
+      </label>
+      <textarea id="custom-sql-box" name="custom_sql" rows="12" placeholder="Enter your SQL query here..." style="width:100%;display:none;margin-top:1em;"></textarea>
+      <div style="font-size:0.98rem;color:#868b94;margin-top:0.3em;">Use for advanced latency tests. Default is <code>SELECT 1</code> for most DBs.</div>
     </div>
     <footer class="minimal-footer" id="footer-btns">
       <button type="submit" class="minimal-btn">Run Test</button>
@@ -180,13 +191,31 @@
 const dbSelect = document.getElementById('dbtype');
 const dbFields = document.getElementById('db-fields');
 const urlFields = document.getElementById('url-fields');
+const customSqlArea = document.getElementById('custom-sql-area');
+const customSqlBox = document.getElementById('custom-sql-box');
+const customSqlCheck = document.getElementById('custom-sql-check');
 function toggleDbUi() {
     if (dbSelect.value === 'url') {
         dbFields.style.display = 'none';
         urlFields.style.display = '';
+        customSqlArea.style.display = "none";
+    } else if (dbSelect.value) {
+        dbFields.style.display = '';
+        urlFields.style.display = 'none';
+        customSqlArea.style.display = "";
     } else {
         dbFields.style.display = '';
         urlFields.style.display = 'none';
+        customSqlArea.style.display = "none";
+    }
+    toggleCustomSQL();
+}
+function toggleCustomSQL() {
+    if (customSqlCheck && customSqlCheck.checked) {
+        customSqlBox.style.display = '';
+        customSqlBox.rows = 20;
+    } else {
+        customSqlBox.style.display = 'none';
     }
 }
 dbSelect.onchange = toggleDbUi;
@@ -196,6 +225,7 @@ function formReset() {
     dbFields.style.display = '';
     urlFields.style.display = 'none';
     removeResults();
+    if (customSqlBox) customSqlBox.style.display = "none";
 }
 function hardClear() {
     // redirect to base URL, kill cache/results
