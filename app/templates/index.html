@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DB Endpoint Latency Checker</title>
+    <link rel="stylesheet" href="/static/style.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .centered-block { margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+      .summary-table { border-collapse: collapse; margin: 1.2em auto 0 auto; font-size:1.07rem; border:1.3px solid #dde1ec; }
+      .summary-table th, .summary-table td { padding: 0.62em 1.2em; text-align: left; border-bottom:1px solid #ececec;}
+      .summary-table th { font-weight: 700; }
+      .summary-table tr:last-child td { border-bottom: none; }
+      .explanation-block { max-width: 500px; margin: 1.5em auto 0 auto; text-align: left; color: #525763; font-size:0.97rem; }
+      .latency-table { font-family: "Segoe UI", Arial, "Liberation Sans", "system-ui", sans-serif; font-size:1.09rem; border-collapse: collapse; border:1.3px solid #dde1ec;}
+      .latency-table th, .latency-table td { border:1px solid #dde1ec; padding:0.56em 0.9em;}
+      .summary-label { font-weight:700; }
+      .summary-value { font-weight:400; }
+    </style>
+</head>
+<body>
+<main>
+  <form class="minimal-form" method="post" action="/test-latency" id="latency-form" autocomplete="off" onsubmit="runProgressBar()">
+    <h2 class="minimal-title">DB Endpoint Latency Checker</h2>
+    <div class="minimal-group">
+      <label for="dbtype">Database Type</label>
+      <select name="dbtype" id="dbtype" required>
+        <option value="" disabled selected>Select database...</option>
+        <option value="oracle" {% if dbtype == 'oracle' %}selected{% endif %}>Oracle</option>
+        <option value="postgresql" {% if dbtype == 'postgresql' %}selected{% endif %}>PostgreSQL</option>
+        <option value="mysql" {% if dbtype == 'mysql' %}selected{% endif %}>MySQL</option>
+        <option value="sqlserver" {% if dbtype == 'sqlserver' %}selected{% endif %}>SQL Server</option>
+        <option value="url" {% if dbtype == 'url' %}selected{% endif %}>HTTP(S) URL</option>
+      </select>
+    </div>
+    <div id="db-fields" class="minimal-fields" {% if dbtype == "url" %}style="display:none;"{% endif %}>
+      <div class="minimal-group">
+        <label for="host">Host / DSN</label>
+        <input type="text" id="host" name="host" value="{{ host|default('') }}" placeholder="e.g. localhost or DSN string" autocomplete="off">
+      </div>
+      <div class="minimal-group">
+        <label for="port">Port</label>
+        <input type="text" id="port" name="port" value="{{ port|default('') }}" autocomplete="off">
+      </div>
+      <div class="minimal-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" value="{{ username|default('') }}" autocomplete="off" placeholder="Database user">
+      </div>
+      <div class="minimal-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" autocomplete="new-password" placeholder="••••••••••••">
+      </div>
+      <div class="minimal-group">
+        <label for="database">Database Name</label>
+        <input type="text" id="database" name="database" value="{{ database|default('') }}" autocomplete="off">
+      </div>
+    </div>
+    <div id="url-fields" class="minimal-fields" {% if dbtype != "url" %}style="display:none;"{% endif %}>
+      <div class="minimal-group">
+        <label for="url">Test URL</label>
+        <input type="text" id="url" name="url" value="{{ url|default('') }}" placeholder="https://example.com" autocomplete="off">
+      </div>
+    </div>
+    <div class="minimal-group">
+      <label for="period">Test Duration (seconds)</label>
+      <input type="number" id="period" name="period" value="{{ period|default(10) }}" min="1">
+    </div>
+    <div class="minimal-group">
+      <label for="interval">Delay Between Tests (seconds)</label>
+      <input type="number" id="interval" name="interval" value="{{ interval|default(1) }}" min="0.1" step="0.1">
+    </div>
+    <footer class="minimal-footer">
+      <button type="submit" class="minimal-btn">Run Test</button>
+      <button type="reset" class="minimal-btn minimal-btn-secondary" onclick="formReset(); return false;">Clear</button>
+    </footer>
+    <div id="loading-indicator" style="display:none; text-align:center; margin-top:1em;">
+      <div class="loader"></div>
+      <div id="prog-label" style="margin:0.8em 0; color:#455;"></div>
+      <progress id="progress-bar" max="100" value="1" style="width: 90%;"></progress>
+    </div>
+  </form>
+
+  {% if result %}
+  <section class="result-card result-section printable centered-block" id="printable-result" style="margin:2em auto 1.2em auto;max-width:650px;">
+    <h3 style="margin:2em 0 0.65em 0; text-align:center;">Latency Chart (ms over test time)</h3>
+    <div class="pulse-chart-box" style="margin:0 0 1.1em 0;">
+      <canvas id="pulseChart" width="580" height="110" style="background:#fafbfc; border-radius:10px;"></canvas>
+    </div>
+    <h3 style="margin:1em 0 0.2em 0; text-align:center;">Latency Results</h3>
+    <div class="table-wrap" style="margin-bottom:1.3em;">
+      <table class="excel-like latency-table" style="margin:0 auto;">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Timestamp</th>
+            <th>Latency (ms)</th>
+            <th>Status</th>
+            <th>Error</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in result.details %}
+          <tr class="{{ 'success' if row.success else 'error' }}">
+            <td>{{ loop.index }}</td>
+            <td>{{ row.timestamp }}</td>
+            <td><span style="font-weight:500;">{{ "%.2f"|format(row.latency_ms) }}</span></td>
+            <td>{{ 'OK' if row.success else 'Fail' }}</td>
+            <td>
+              {% if row.error %}
+              <span class="errormsg">{{ row.error }}</span>
+              {% else %} - {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:0.6em;"></div>
+    <h3 style="text-align:center;margin-bottom:0.5em;">Summary of Statistics</h3>
+    <table class="summary-table">
+      <tr><th class="summary-label">P99</th><td class="summary-value">{{ result.latency_stats.p99 is not none and "%.2f"|format(result.latency_stats.p99) or 'N/A' }} ms</td></tr>
+      <tr><th class="summary-label">P90</th><td class="summary-value">{{ result.latency_stats.p90 is not none and "%.2f"|format(result.latency_stats.p90) or 'N/A' }} ms</td></tr>
+      <tr><th class="summary-label">Average</th><td class="summary-value">{{ result.latency_stats.avg is not none and "%.2f"|format(result.latency_stats.avg) or 'N/A' }} ms</td></tr>
+      <tr><th class="summary-label">Mean</th><td class="summary-value">{{ result.latency_stats.mean is not none and "%.2f"|format(result.latency_stats.mean) or 'N/A' }} ms</td></tr>
+      <tr><th class="summary-label">StdDev</th><td class="summary-value">{{ result.latency_stats.stddev is not none and "%.2f"|format(result.latency_stats.stddev) or 'N/A' }} ms</td></tr>
+      <tr><th class="summary-label">Runs</th><td class="summary-value">{{ result.latency_stats.runs | default('N/A') }}</td></tr>
+    </table>
+    <div class="explanation-block">
+      <b>What these statistics mean:</b><br>
+      <b>P99</b>: 99% of your latency measurements are lower than this value (i.e., only 1% of requests took longer).<br>
+      <b>P90</b>: 90% of your latency measurements are lower than this value (i.e., only 10% of requests took longer).<br>
+      <b>Average</b>: Arithmetic average of all measured latencies.<br>
+      <b>Mean</b>: The same as the average in this context.<br>
+      <b>StdDev</b>: Standard deviation, showing how much your latency varied.<br>
+      <b>Runs</b>: The total number of measurement points.<br>
+    </div>
+  </section>
+<script>
+    // Chart draw
+    const latencies = [{{ result.details | map(attribute='latency_ms') | join(',') }}];
+    const ctx = document.getElementById('pulseChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: latencies.map((_,i)=>i+1),
+        datasets: [{
+          label: 'Latency (ms)',
+          data: latencies,
+          fill: false,
+          borderColor: '#47a992',
+          backgroundColor: '#3ba7c844',
+          tension: 0.33,
+          pointRadius: 2.5,
+          pointBackgroundColor: '#0b7da1'
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: { legend: { display: false }},
+        scales: {
+          x: {
+            title: {display:true, text: "Test Iteration"},
+            display: true,
+            grid: { color: "#ecf0f7"}
+          },
+          y: {
+            beginAtZero: true,
+            grid: {drawBorder:false, color:'#e0e0fa'},
+            title: {display:true, text: "Latency (ms)"}
+          }
+        }
+      }
+    });
+</script>
+  {% endif %}
+</main>
+<script>
+const dbSelect = document.getElementById('dbtype');
+const dbFields = document.getElementById('db-fields');
+const urlFields = document.getElementById('url-fields');
+function toggleDbUi() {
+    if (dbSelect.value === 'url') {
+        dbFields.style.display = 'none';
+        urlFields.style.display = '';
+    } else {
+        dbFields.style.display = '';
+        urlFields.style.display = 'none';
+    }
+}
+dbSelect.onchange = toggleDbUi;
+window.onload = toggleDbUi;
+function formReset() {
+    document.getElementById('latency-form').reset();
+    dbFields.style.display = '';
+    urlFields.style.display = 'none';
+}
+// Loader/progress for test (progress based on Test Duration)
+function runProgressBar() {
+    const loader = document.getElementById('loading-indicator');
+    loader.style.display = '';
+    let prog = document.getElementById('progress-bar');
+    let label = document.getElementById('prog-label');
+    let period = parseFloat(document.getElementById('period').value) || 10;
+    let elapsed = 0;
+    let intervalMs = 250;
+    prog.value = 1;
+    label.innerText = "Starting...";
+    let progressInterval = setInterval(function(){
+        if (loader.style.display === "none") {clearInterval(progressInterval); return;}
+        elapsed += intervalMs/1000;
+        let percent = Math.min(99, 100 * elapsed / period);
+        prog.value = percent;
+        label.innerText = "Test progress: " + Math.floor(percent) + "% ("+Math.round(elapsed)+"s / "+period+"s)";
+        if (percent >= 99) label.innerText = "Finishing...";
+    }, intervalMs);
+}
+</script>
+</body>
+</html>
