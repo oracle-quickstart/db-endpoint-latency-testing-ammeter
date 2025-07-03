@@ -94,6 +94,15 @@ curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
 
 - You can enter multi-line SQL in the terminal by wrapping it in quotes, or you can pipe in a file with `-d custom_sql="$(cat myquery.sql)"`.
 
+### Important Note when using Custom queries ###
+- Custom queries that are slower will always yield fewer completed test cycles in a fixed period. For eg: If your custom query takes, for example, 0.3 seconds and your interval is 1 second, each full cycle is actually ~1.3s, so over a 10 second period you’ll only get about 7-8 cycles.
+  
+- For `SELECT 1`, each loop is closer to 1s so you see 10 full cycles.
+  
+- This is expected behavior and the code is running safely/correctly.
+  
+- Custom queries that are slower will always yield fewer completed test cycles in a fixed period. Hence use Custom queries carefully.
+
 ## Databases Supported 🔌 :
 
 ### Oracle DB >= 12.2 📌  : 
