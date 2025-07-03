@@ -1,163 +1,106 @@
 # DB(D)  Endpoint(E)  Latency(L)  Testing(T)  Ammeter(A) 
 
-## DELTA 
+## DELTA - FastAPI based WebApp to test Database Latency (NEW, 2025)
 
-📌 Introducing DELTA (DB Endpoint Latency Testing Ammeter). DELTA is a tool to test real-world latency against a remote database using execution of a query and calculating the network return time. The tool provides functions to test latency of Oracle, MySQL and Postgres databases.
+This project is a secure, lightweight SaaS-like database latency testing GUI and API, built with FastAPI.  
 
-The tool uses the oracledb python package to connect to Oracle databases and execute a single query per request (you can specify multiple requests as well). The tool uses the time module to measure the time it takes to execute the query, fetch the results, and close the connection. It calculates the latency of each request and the average latency of all requests.
+![Screenshot 2025-07-03 at 11 25 54 PM](https://github.com/user-attachments/assets/1e26dd2c-9423-46b8-9a76-b05b689e72b6)
 
+![Screenshot 2025-07-03 at 11 26 17 PM](https://github.com/user-attachments/assets/235f6251-3198-4cd4-99a7-63490b4f6405)
 
-🔧 DELTA is a cloud tool to test real-world latency against a remote database endpoint using execution of a query and calculating the network return time. 
+![Screenshot 2025-07-03 at 11 26 30 PM](https://github.com/user-attachments/assets/f1b17fb8-f637-4b86-95c9-52dd0b6e2067)
 
+## Databases Supported 🔌 :
 
-🔧 Network tools like ping ,iperf or tcp ping can only give you network based latency which does not always translate well to an application running those queries on a remote database. 
-
-
-🐍 DELTA uses Python client for Oracle, MySQL and PostgreSQL to run a query like “SELECT 1” or "SELECT 1 FROM DUAL". You can then specific the number of executions of the query and DELTA calculates the average network round-trip time for all the executions of the query on the remote database. The script also includes error handling to track failed requests. You can also include your own custom queries. 
-
-
- ## Databases Supported 🔌 :
-
- 
- ### Oracle DB >= 12.2 📌  : 
-
+### Oracle DB >= 12.2 📌  : 
 - Amazon RDS Oracle
-
 - OCI Autonomous Database
-
 - OCI VMDB
-
 - OCI Exadata Cloud Service
-
 - Oracle Database On-Premise
 
-
 ### Postgres >= 11 📌 :
-
 - Amazon RDS Postgres
-
 - Amazon RDS Aurora Postgres
-
 - Postgres On-premise 
 
-
 ### MySQL >= 5.7 📌  : 
-
 - Amazon RDS MySQL
-
 - Amazon RDS Aurora MySQL
-
 - OCI MySQL Database Service
-
 - OCI MySQL Heatwave
-
 - MySQL On-Premise
 
-
 ### URL - HTTPS | HTTP 📌 :
-
 - Check Public or Private URLs for latency
 
 
-# Deploy
-
-## Requirement
-
+### 1. Create a Python Virtual Environment
+```bash
+python3 -m venv .venv
+# Activate on Unix/macOS:
+source .venv/bin/activate
+# Activate on Windows:
+.venv\Scripts\activate
 ```
-Python >= 3.6.8
+### 2. Install requirements
+```bash
+pip install -r requirements.txt
 ```
-
-## Clone Repo
-
+### 3. Launch the Web App
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
-git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
-
-cd db-endpoint-latency-testing-ammeter/
-
-python3 -m venv db-endpoint-latency-testing-ammeter
-
-source db-endpoint-latency-testing-ammeter/bin/activate
+### 4. Open your browser at:
 ```
+http://localhost:8000
+```
+- Log in: `admin` / `change_this` (update password in `app/main.py` for production).
+- Fill out the form and run latency tests in real time with live chart and table views.
+- For any errors (connection, authentication) you'll see detailed front-end feedback.
 
-## Install Python packages
+### 5. API Usage via Curl/CLI Example:
+```bash
+curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
+  -F dbtype=postgresql -F host=localhost -F port=5432 -F username=postgres -F password=yourpassword -F database=postgres -F interval=1 -F period=10
 ```
-## On CentOS or Oracle Linux or Redhat Linux
-sudo yum install postgresql postgresql-devel python36-devel
+- API returns JSON, suitable for automation and CI.
 
-## On Ubuntu
-sudo apt install libpq-dev python3.x-dev
+---
 
-## Install requirements
-pip3 install -r requirements.txt
-```
+## Command-Line (delta.py) Usage — Secure, No Stored Credentials
 
-# Calculate Latency for Oracle DB
+The original `delta.py` script remains available for CLI power users and can test Oracle, PostgreSQL, MySQL, and URLs. **No credentials are stored in this file**; you must supply all values as arguments or interactively via a prompt.
 
-Set the below credentials in the delta.py script
-```
-oracle_un='your_user'
-oracle_pw='your_password'
-oracle_cs='your_connection_string'
-```
-Run
-```
-python3 delta.py --db oracle --interval 3 --period 5 --csvoutput oracle_latency.csv
-```
+Use it like this (replace ALL UPPERCASE placeholders):
 
+### Oracle Example
 
-# Calculate Latency for MySQL 
+```bash
+python delta.py --db oracle --user ADMIN_USER --password YOUR_PASSWORD --host "YOUR_ORACLE_DSN" --interval 3 --period 5 --csvoutput oracle_latency.csv
+```
+- If you omit an argument, you will be prompted at runtime (passwords asked securely).
 
-Set the below credentials in the delta.py script
-```
-mysql_un = 'mysql'
-mysql_pw = 'your_password'
-mysql_host = 'localhost'
-mysql_port = '3306'
-mysql_db = 'mysql'
-```
-Run
-```
-python3 delta.py --db mysql --interval 3 --period 5 --csvoutput mysql_latency.csv
-```
+### PostgreSQL Example
 
-# Calculate Latency for PostgreSQL 
+```bash
+python delta.py --db postgresql --user PG_USER --password YOUR_PASSWORD --host PG_HOST --port 5432 --database DB_NAME --interval 3 --period 5 --csvoutput postgres_latency.csv
+```
+### MySQL Example
 
-Set the below credentials in the delta.py script
+```bash
+python delta.py --db mysql --user MYSQL_USER --password YOUR_PASSWORD --host MYSQL_HOST --port 3306 --database DB_NAME --interval 3 --period 5 --csvoutput mysql_latency.csv
 ```
-pgsql_un = 'postgres'
-pgsql_pw = 'your_password'
-pgsql_host = 'localhost'
-pgsql_port = '5432'
-pgsql_db = 'postgres'
-```
-Run
-```
-python3 delta.py --db postgresql --interval 3 --period 5 --csvoutput postgres_latency.csv
-```
+### URL Example
 
-
-# Calculate URL Latency 
-
-Set the below parameter in the delta.py script
+```bash
+python delta.py --db url --url "https://example.com" --interval 3 --period 5 --csvoutput url_latency.csv
 ```
-test_url = 'your_url'
-```
-Run
-```
-python3 delta.py --db url --interval 3 --period 5 --csvoutput url_latency.csv
-```
+- All arguments can also be supplied interactively if omitted.
+- No passwords, usernames, or hostnames are stored in the codebase.
 
-# Test Cases for Each DB and URL
+---
 
-```
-python3 delta.py --db oracle --interval 3 --period 5 --csvoutput oracle_latency.csv
-
-python3 delta.py --db mysql --interval 3 --period 5 --csvoutput mysql_latency.csv
-
-python3 delta.py --db postgresql --interval 3 --period 5 --csvoutput postgres_latency.csv
-
-python3 delta.py --db url --interval 3 --period 5 --csvoutput url_latency.csv
-```
 
 ## Contributing
 
