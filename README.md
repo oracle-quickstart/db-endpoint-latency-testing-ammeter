@@ -51,8 +51,7 @@ http://localhost:8000
 
 ### 6. API Usage via Curl/CLI Example:
 ```bash
-curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
-  -d dbtype=mysql -d host=localhost -d port=3390 -d username=testuser -d password="YourPassword!##" -d database=testdb -d interval=1 -d period=10 | jq .
+curl -u admin:change_this -X POST http://localhost:8000/api/test-latency -d dbtype=mysql -d host=localhost -d port=3390 -d username=testuser -d password="YOurP@ssword#12" -d database=testdb -d interval=1 -d period=10 | jq .
 ```
 ```
 
@@ -134,11 +133,6 @@ curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
   ]
 }
 ```
-
-![Screenshot 2025-07-04 at 1 20 33 AM](https://github.com/user-attachments/assets/30223aff-71fc-459e-adfb-1a4cacfbf6a0)
-
-
----
 
 ## Command-Line (delta.py) Usage — Secure, No Stored Credentials
 
