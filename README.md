@@ -8,6 +8,54 @@ This project is a secure, lightweight SaaS-like database latency testing GUI and
 
 ![Screenshot 2025-07-03 at 11 26 30 PM](https://github.com/user-attachments/assets/f1b17fb8-f637-4b86-95c9-52dd0b6e2067)
 
+### 1. Clone Repository ###
+```bash
+git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git && cd db-endpoint-latency-testing-ammeter/
+```
+
+### 2. Create a Python Virtual Environment
+
+```bash
+python3 -m venv .venv
+
+# Activate on Unix/macOS:
+source .venv/bin/activate
+
+# Activate on Windows:
+.venv\Scripts\activate
+```
+
+### 3. Install requirements
+```bash
+pip3 install -r requirements.txt
+```
+
+### 4. Launch the Web App
+```bash
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+### 5. Open your browser at:
+```
+http://localhost:8000
+```
+- Log in: `admin` / `change_this` (update password in `app/main.py` for production).
+- Fill out the form and run latency tests in real time with live chart and table views.
+- For any errors (connection, authentication) you'll see detailed front-end feedback.
+
+### 6. API Usage via Curl/CLI Example:
+```bash
+curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
+  -F dbtype=postgresql -F host=localhost -F port=5432 -F username=postgres -F password=yourpassword -F database=postgres -F interval=1 -F period=10
+```
+- API returns JSON, suitable for automation and CI.
+
+---
+
+## Command-Line (delta.py) Usage — Secure, No Stored Credentials
+
+The original `delta.py` script remains available for CLI power users and can test Oracle, PostgreSQL, MySQL, and URLs. **No credentials are stored in this file**; you must supply all values as arguments or interactively via a prompt.
+
+
 ## Databases Supported 🔌 :
 
 ### Oracle DB >= 12.2 📌  : 
@@ -31,74 +79,6 @@ This project is a secure, lightweight SaaS-like database latency testing GUI and
 
 ### URL - HTTPS | HTTP 📌 :
 - Check Public or Private URLs for latency
-
-
-### 1. Create a Python Virtual Environment
-```bash
-python3 -m venv .venv
-# Activate on Unix/macOS:
-source .venv/bin/activate
-# Activate on Windows:
-.venv\Scripts\activate
-```
-### 2. Install requirements
-```bash
-pip install -r requirements.txt
-```
-### 3. Launch the Web App
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
-### 4. Open your browser at:
-```
-http://localhost:8000
-```
-- Log in: `admin` / `change_this` (update password in `app/main.py` for production).
-- Fill out the form and run latency tests in real time with live chart and table views.
-- For any errors (connection, authentication) you'll see detailed front-end feedback.
-
-### 5. API Usage via Curl/CLI Example:
-```bash
-curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
-  -F dbtype=postgresql -F host=localhost -F port=5432 -F username=postgres -F password=yourpassword -F database=postgres -F interval=1 -F period=10
-```
-- API returns JSON, suitable for automation and CI.
-
----
-
-## Command-Line (delta.py) Usage — Secure, No Stored Credentials
-
-The original `delta.py` script remains available for CLI power users and can test Oracle, PostgreSQL, MySQL, and URLs. **No credentials are stored in this file**; you must supply all values as arguments or interactively via a prompt.
-
-Use it like this (replace ALL UPPERCASE placeholders):
-
-### Oracle Example
-
-```bash
-python delta.py --db oracle --user ADMIN_USER --password YOUR_PASSWORD --host "YOUR_ORACLE_DSN" --interval 3 --period 5 --csvoutput oracle_latency.csv
-```
-- If you omit an argument, you will be prompted at runtime (passwords asked securely).
-
-### PostgreSQL Example
-
-```bash
-python delta.py --db postgresql --user PG_USER --password YOUR_PASSWORD --host PG_HOST --port 5432 --database DB_NAME --interval 3 --period 5 --csvoutput postgres_latency.csv
-```
-### MySQL Example
-
-```bash
-python delta.py --db mysql --user MYSQL_USER --password YOUR_PASSWORD --host MYSQL_HOST --port 3306 --database DB_NAME --interval 3 --period 5 --csvoutput mysql_latency.csv
-```
-### URL Example
-
-```bash
-python delta.py --db url --url "https://example.com" --interval 3 --period 5 --csvoutput url_latency.csv
-```
-- All arguments can also be supplied interactively if omitted.
-- No passwords, usernames, or hostnames are stored in the codebase.
-
----
-
 
 ## Contributing
 
