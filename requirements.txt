@@ -1,6 +1,10 @@
-requests
+fastapi
+uvicorn
+jinja2
 oracledb
-numpy
-pymysql
 psycopg2-binary
-matplotlib
+pymysql
+requests
+numpy
+python-multipart
+pyodbc; platform_system=="Windows" or platform_system=="Linux" or platform_system=="Darwin"
