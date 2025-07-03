@@ -40,9 +40,9 @@ def test_latency(
     url: str = Form(""),
     interval: float = Form(1.0),
     period: int = Form(10),
+    custom_sql: str = Form(""),
     user: str = Depends(get_current_user)
 ):
-    # All credentials are held transiently only for test run
     result = dbtools.run_latency_test(
         dbtype=dbtype,
         host=host,
@@ -52,9 +52,9 @@ def test_latency(
         database=database,
         url=url,
         interval=interval,
-        period=period
+        period=period,
+        custom_sql=custom_sql
     )
-    # Render index.html with results below
     return templates.TemplateResponse("index.html", {
         "request": request,
         "user": user,
@@ -66,7 +66,8 @@ def test_latency(
         "database": database,
         "url": url,
         "interval": interval,
-        "period": period
+        "period": period,
+        "custom_sql": custom_sql
     })
 
 @app.post("/api/test-latency")
@@ -80,9 +81,9 @@ def api_test_latency(
     url: str = Form(""),
     interval: float = Form(1.0),
     period: int = Form(10),
+    custom_sql: str = Form(""),
     credentials: HTTPBasicCredentials = Depends(security)
 ):
-    # For API/CLI use -- returns result JSON
     get_current_user(credentials)
     result = dbtools.run_latency_test(
         dbtype=dbtype,
@@ -93,6 +94,7 @@ def api_test_latency(
         database=database,
         url=url,
         interval=interval,
-        period=period
+        period=period,
+        custom_sql=custom_sql
     )
     return JSONResponse(result)
