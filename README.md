@@ -2,6 +2,12 @@
 
 This project is a secure, lightweight SaaS-like database latency testing tool with a Mobile GUI, along with REST API.
 
+
+
+https://github.com/user-attachments/assets/74497e35-a85b-4051-bee0-99a3c1ed67d0
+
+
+
 Built with ❤️ using FastAPI.  
 
 
@@ -49,12 +55,9 @@ http://localhost:8000
 - Log in: `admin` / `change_this` (update password in `app/main.py` for production).
 - Fill out the form and run latency tests in real time with live chart and table views.
 - For any errors (connection, authentication) you'll see detailed front-end feedback.
+  
+<img width="655" alt="Screenshot 2025-07-04 at 2 49 25 AM" src="https://github.com/user-attachments/assets/c15b53dc-e138-4448-9777-e980db4354f0" />
 
-![Screenshot 2025-07-03 at 11 25 54 PM](https://github.com/user-attachments/assets/1e26dd2c-9423-46b8-9a76-b05b689e72b6)
-
-![Screenshot 2025-07-03 at 11 26 17 PM](https://github.com/user-attachments/assets/235f6251-3198-4cd4-99a7-63490b4f6405)
-
-![Screenshot 2025-07-03 at 11 26 30 PM](https://github.com/user-attachments/assets/f1b17fb8-f637-4b86-95c9-52dd0b6e2067)
 
 ### 5. Default SQL : API Usage via Curl/CLI MySQL Example
 ```bash
@@ -137,7 +140,7 @@ Please consult the [security guide](./SECURITY.md) for our responsible security 
 
 ## License
 
-Copyright (c) 2023 Oracle and/or its affiliates.
+Copyright (c) 2025 Oracle and/or its affiliates.
 
 Released under the Apache License Version 2.0, January 2004
 <http://www.apache.org/licenses/>.
