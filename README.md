@@ -73,6 +73,11 @@ curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
   | jq .
 ```
 
+
+https://github.com/user-attachments/assets/61a85844-6464-4630-86ad-5a34e11adecd
+
+
+
 ### 6. Custom User SQL : API Usage via Curl/CLI MySQL Example
 
 To test with a custom SQL query from the command line, simply add a -d custom_sql="YOUR SQL HERE" parameter to your curl command, like this:
