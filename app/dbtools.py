@@ -23,10 +23,12 @@ def run_latency_test(
     database="",
     url="",
     interval=1.0,
-    period=10
+    period=10,
+    custom_sql=""
 ):
     query_times = []
     result_info = {"success": False, "error": None, "latency_stats": {}, "details": []}
+    custom_sql = (custom_sql or "").strip()
     try:
         end_time = time.perf_counter() + period
         while time.perf_counter() < end_time:
@@ -36,21 +38,24 @@ def run_latency_test(
                 if dbtype == "oracle":
                     conn = oracledb.connect(user=username, password=password, dsn=host)
                     cursor = conn.cursor()
-                    cursor.execute("select 1 from dual")
+                    sql = custom_sql if custom_sql else "select 1 from dual"
+                    cursor.execute(sql)
                     cursor.fetchall()
                     cursor.close()
                     conn.close()
                 elif dbtype == "postgresql":
                     conn = psycopg2.connect(host=host, port=port, dbname=database, user=username, password=password)
                     cursor = conn.cursor()
-                    cursor.execute("SELECT 1")
+                    sql = custom_sql if custom_sql else "SELECT 1"
+                    cursor.execute(sql)
                     cursor.fetchall()
                     cursor.close()
                     conn.close()
                 elif dbtype == "mysql":
                     conn = pymysql.connect(host=host, port=int(port), user=username, password=password, db=database)
                     cursor = conn.cursor()
-                    cursor.execute("SELECT 1")
+                    sql = custom_sql if custom_sql else "SELECT 1"
+                    cursor.execute(sql)
                     cursor.fetchall()
                     cursor.close()
                     conn.close()
@@ -58,7 +63,8 @@ def run_latency_test(
                     conn_str = f"DRIVER={{ODBC Driver 17 for SQL Server}};SERVER={host},{port};DATABASE={database};UID={username};PWD={password}"
                     conn = pyodbc.connect(conn_str)
                     cursor = conn.cursor()
-                    cursor.execute("SELECT 1")
+                    sql = custom_sql if custom_sql else "SELECT 1"
+                    cursor.execute(sql)
                     cursor.fetchall()
                     cursor.close()
                     conn.close()
@@ -81,7 +87,6 @@ def run_latency_test(
                 "error": error
             })
             time.sleep(interval)
-        # Compute p99, p90, avg, stddev, mean on all query_times
         arr = np.array(query_times)
         result_info["latency_stats"] = {
             "p99": float(np.percentile(arr, 99)) if len(arr) else None,
