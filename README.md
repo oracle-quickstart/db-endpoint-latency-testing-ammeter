@@ -52,9 +52,91 @@ http://localhost:8000
 ### 6. API Usage via Curl/CLI Example:
 ```bash
 curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
-  -F dbtype=postgresql -F host=localhost -F port=5432 -F username=postgres -F password=yourpassword -F database=postgres -F interval=1 -F period=10
+  -d dbtype=mysql -d host=localhost -d port=3390 -d username=testuser -d password="YourPassword!##" -d database=testdb -d interval=1 -d period=10 | jq .
 ```
-- API returns JSON, suitable for automation and CI.
+```
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1260  100  1145  100   115    107     10  0:00:11  0:00:10  0:00:01   259
+{
+  "success": true,
+  "error": null,
+  "latency_stats": {
+    "p99": 65.00130997534143,
+    "p90": 64.45847470022272,
+    "avg": 59.44308740145061,
+    "stddev": 3.661004661748353,
+    "mean": 59.44308740145061,
+    "runs": 10
+  },
+  "details": [
+    {
+      "timestamp": "2025-07-04 01:18:22",
+      "latency_ms": 61.802583004464395,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:23",
+      "latency_ms": 61.06654200993944,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:24",
+      "latency_ms": 64.39145799959078,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:25",
+      "latency_ms": 53.58212499413639,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:26",
+      "latency_ms": 65.06162500591017,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:27",
+      "latency_ms": 57.83200000587385,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:29",
+      "latency_ms": 54.59125000925269,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:30",
+      "latency_ms": 57.854083002894185,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:31",
+      "latency_ms": 60.93537498963997,
+      "success": true,
+      "error": null
+    },
+    {
+      "timestamp": "2025-07-04 01:18:32",
+      "latency_ms": 57.31383299280424,
+      "success": true,
+      "error": null
+    }
+  ]
+}
+```
+
+![Screenshot 2025-07-04 at 1 20 33 AM](https://github.com/user-attachments/assets/30223aff-71fc-459e-adfb-1a4cacfbf6a0)
+
 
 ---
 
