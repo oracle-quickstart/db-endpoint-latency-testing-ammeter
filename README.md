@@ -5,12 +5,19 @@ This project is a secure, lightweight SaaS-like database latency testing GUI and
 https://github.com/user-attachments/assets/e3eaf179-914b-4c17-bc47-35f17e86aee0
 
 
-### 1. Clone Repository ###
+## Clone Repository ##
 ```bash
 git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git && cd db-endpoint-latency-testing-ammeter/
 ```
 
-### 2. Create a Python Virtual Environment
+## Quick Build with One-Command ##
+```bash
+ bash build.sh
+```
+
+## Alternate : Step-by-Step Manual Build ##
+
+### 1. Create a Python Virtual Environment
 
 ```bash
 python3 -m venv .venv
@@ -26,16 +33,16 @@ source .venv/bin/activate
 .venv\Scripts\activate
 ```
 
-### 3. Install requirements
+### 2. Install requirements
 ```bash
 pip3 install -r requirements.txt
 ```
 
-### 4. Launch the Web App
+### 3. Launch the Web App
 ```bash
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
-### 5. Open your browser at:
+### 4. Open your browser at:
 ```
 http://localhost:8000
 ```
@@ -49,7 +56,7 @@ http://localhost:8000
 
 ![Screenshot 2025-07-03 at 11 26 30 PM](https://github.com/user-attachments/assets/f1b17fb8-f637-4b86-95c9-52dd0b6e2067)
 
-### 6. API Usage via Curl/CLI Example:
+### 5. API Usage via Curl/CLI Example:
 ```bash
 curl -u admin:change_this -X POST http://localhost:8000/api/test-latency -d dbtype=mysql -d host=localhost -d port=3390 -d username=testuser -d password="YOurP@ssword#12" -d database=testdb -d interval=1 -d period=10 | jq .
 ```
