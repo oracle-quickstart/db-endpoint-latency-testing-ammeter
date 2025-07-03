@@ -71,15 +71,15 @@ def test_latency(
 
 @app.post("/api/test-latency")
 def api_test_latency(
-    dbtype: str,
-    host: str = "",
-    port: str = "",
-    username: str = "",
-    password: str = "",
-    database: str = "",
-    url: str = "",
-    interval: float = 1.0,
-    period: int = 10,
+    dbtype: str = Form(...),
+    host: str = Form(""),
+    port: str = Form(""),
+    username: str = Form(""),
+    password: str = Form(""),
+    database: str = Form(""),
+    url: str = Form(""),
+    interval: float = Form(1.0),
+    period: int = Form(10),
     credentials: HTTPBasicCredentials = Depends(security)
 ):
     # For API/CLI use -- returns result JSON
