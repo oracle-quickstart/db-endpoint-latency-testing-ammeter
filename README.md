@@ -1,6 +1,4 @@
-# DB(D)  Endpoint(E)  Latency(L)  Testing(T)  Ammeter(A) 
-
-## DELTA - FastAPI based WebApp to test Database Latency (NEW, 2025)
+# DELTA - FastAPI based WebApp to Test Database Latency (NEW, 2025)
 
 This project is a secure, lightweight SaaS-like database latency testing GUI and API, built with FastAPI.  
 
