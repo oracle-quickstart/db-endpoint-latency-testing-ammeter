@@ -34,7 +34,7 @@ uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
 https://localhost:8000
 ```
-- Log in: `admin` / `abcd1234` (update with your password by setting `APP_ADMIN_PASS` environment variable).
+- Log in: `admin` / `abcd1234` (update with your password which you set for `APP_ADMIN_PASS` environment variable).
 - Fill out the form and run latency tests in real time with live chart and table views.
 - For any errors (connection, authentication) you'll see detailed front-end feedback.
   
