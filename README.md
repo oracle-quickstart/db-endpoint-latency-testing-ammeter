@@ -11,88 +11,69 @@ https://github.com/user-attachments/assets/74497e35-a85b-4051-bee0-99a3c1ed67d0
 Built with ❤️ using FastAPI.  
 
 
-## Clone Repository ##
+## 1. Clone Repository ##
 ```bash
 git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git && cd db-endpoint-latency-testing-ammeter/
 ```
 
-## Quick Build with One-Command ##
+## 2. Set APP_ADMIN_PASS environment variable ##
+```bash
+export APP_ADMIN_PASS='abcd1234'
+```
+
+## 3. Quick Build with One-Command ##
 ```bash
  bash build.sh
 ```
 
-## Alternate : Step-by-Step Manual Build ##
-
-### 1. Create a Python Virtual Environment
-
-```bash
-python3 -m venv .venv
-```
-
-#### Activate on Unix/macOS:
-```bash
-source .venv/bin/activate
-```
-
-#### Activate on Windows:
-```bash
-.venv\Scripts\activate
-```
-
-### 2. Install requirements
-```bash
-pip3 install -r requirements.txt
-```
-
-### 3. Launch the Web App
+## 4. Launch the Web App; Only required when you restart the App ##
 ```bash
 uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
-### 4. Open your browser at:
+## 5. Open the DB Latency app in our browser ##
 ```
-http://localhost:8000
+https://localhost:8000
 ```
-- Log in: `admin` / `change_this` (update password in `app/main.py` for production).
+- Log in: `admin` / `abcd1234` (update with your password by setting `APP_ADMIN_PASS` environment variable).
 - Fill out the form and run latency tests in real time with live chart and table views.
 - For any errors (connection, authentication) you'll see detailed front-end feedback.
   
 <img width="655" alt="Screenshot 2025-07-04 at 2 49 25 AM" src="https://github.com/user-attachments/assets/c15b53dc-e138-4448-9777-e980db4354f0" />
 
 
-### 5. Default SQL : API Usage via Curl/CLI MySQL Example
+## 6. Default SQL : API Usage via Curl/CLI MySQL Example ##
 ```bash
-curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
+curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
+  -k \
   -d dbtype=mysql \
   -d host=localhost \
   -d port=3390 \
-  -d username=testuser \
-  -d password="YourPassword1##" \
-  -d database=testdb \
+  -d username=snare \
+  -d password="abcdABCD1234##" \
+  -d database=snarepoc \
   -d interval=1 \
   -d period=10 \
   | jq .
 ```
 
 
-https://github.com/user-attachments/assets/61a85844-6464-4630-86ad-5a34e11adecd
 
-
-
-### 6. Custom User SQL : API Usage via Curl/CLI MySQL Example
+## 6. Custom User SQL : API Usage via Curl/CLI MySQL Example ##
 
 To test with a custom SQL query from the command line, simply add a -d custom_sql="YOUR SQL HERE" parameter to your curl command, like this:
 
 ```bash
-curl -u admin:change_this -X POST http://localhost:8000/api/test-latency \
+curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
+  -k \
   -d dbtype=mysql \
   -d host=localhost \
   -d port=3390 \
-  -d username=testuser \
-  -d password="YourPassword1##" \
-  -d database=testdb \
+  -d username=snare \
+  -d password="abcdABCD1234##" \
+  -d database=snarepoc \
   -d interval=1 \
   -d period=10 \
-  -d custom_sql="SELECT * FROM mytable WHERE status='ACTIVE' LIMIT 10" \
+  -d custom_sql="select count(*) from WIN2019SNAREDC_SNARE_IA;" \
   | jq .
 ```
 
