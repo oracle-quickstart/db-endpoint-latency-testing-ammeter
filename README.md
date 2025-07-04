@@ -16,7 +16,7 @@ Built with ❤️ using FastAPI.
 git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git && cd db-endpoint-latency-testing-ammeter/
 ```
 
-## 2. Set APP_ADMIN_PASS environment variable ##
+## 2. Set `APP_ADMIN_PASS` environment variable ##
 ```bash
 export APP_ADMIN_PASS='abcd1234'
 ```
@@ -58,7 +58,7 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
 
 
 
-## 6. Custom User SQL : API Usage via Curl/CLI MySQL Example ##
+## 7. Custom User SQL : API Usage via Curl/CLI MySQL Example ##
 
 To test with a custom SQL query from the command line, simply add a -d custom_sql="YOUR SQL HERE" parameter to your curl command, like this:
 
@@ -92,28 +92,28 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   
 - Custom queries that are slower will always yield fewer completed test cycles in a fixed period. Hence use Custom queries carefully.
 
-## Databases Supported 🔌 :
+##  🔌 Databases Supported
 
-### Oracle DB >= 12.2 📌  : 
+### 📌 Oracle DB  
 - Amazon RDS Oracle
 - OCI Autonomous Database
 - OCI VMDB
 - OCI Exadata Cloud Service
 - Oracle Database On-Premise
 
-### Postgres >= 11 📌 :
+### 📌 PostgreSQL
 - Amazon RDS Postgres
 - Amazon RDS Aurora Postgres
 - Postgres On-premise 
 
-### MySQL >= 5.7 📌  : 
+### 📌 MySQL  
 - Amazon RDS MySQL
 - Amazon RDS Aurora MySQL
 - OCI MySQL Database Service
 - OCI MySQL Heatwave
 - MySQL On-Premise
 
-### URL - HTTPS | HTTP 📌 :
+### 📌 URL - HTTPS | HTTP 
 - Check Public or Private URLs for latency
 
 ## Contributing
