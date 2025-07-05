@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DB Latency Minimalist SaaS</title>
+    <title>DB Endpoint Latency Testing</title>
     <link rel="stylesheet" href="/static/style.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -41,7 +41,7 @@
     </div>
     <div id="db-fields" class="minimal-fields" {% if dbtype == "url" %}style="display:none;"{% endif %}>
       <div class="minimal-group">
-        <label for="host">Host / DSN</label>
+        <label for="host">Hostname / DSN (Oracle only)</label>
         <input type="text" id="host" name="host" value="{{ host|default('') }}" placeholder="e.g. localhost or DSN string" autocomplete="off">
       </div>
       <div class="minimal-group">
