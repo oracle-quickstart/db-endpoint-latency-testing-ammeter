@@ -36,13 +36,20 @@ def run_latency_test(
             ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             try:
                 if dbtype == "oracle":
-                    conn = oracledb.connect(user=username, password=password, dsn=host)
-                    cursor = conn.cursor()
-                    sql = custom_sql if custom_sql else "select 1 from dual"
-                    cursor.execute(sql)
-                    cursor.fetchall()
-                    cursor.close()
-                    conn.close()
+                    conn = None
+                    try:
+                        if port and database:
+                            cp = oracledb.ConnectParams(host=host, port=int(port), service_name=database)
+                            conn = oracledb.connect(user=username, password=password, params=cp)
+                        else:
+                            conn = oracledb.connect(user=username, password=password, dsn=host)
+                        with conn.cursor() as cursor:
+                            sql = custom_sql if custom_sql else "select 1 from dual"
+                            cursor.execute(sql)
+                            cursor.fetchall()
+                    finally:
+                        if conn:
+                            conn.close()
                 elif dbtype == "postgresql":
                     conn = psycopg2.connect(host=host, port=port, dbname=database, user=username, password=password)
                     cursor = conn.cursor()
