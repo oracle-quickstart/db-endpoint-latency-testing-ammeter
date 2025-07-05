@@ -41,7 +41,7 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -d host=localhost \
   -d port=3390 \
   -d username=snare \
-  -d password="abcdABCD1234##" \
+  -d password="" \
   -d database=snarepoc \
   -d interval=1 \
   -d period=10 \
@@ -58,7 +58,7 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -d host=localhost \
   -d port=3390 \
   -d username=snare \
-  -d password="abcdABCD1234##" \
+  -d password="" \
   -d database=snarepoc \
   -d interval=1 \
   -d period=10 \
@@ -169,19 +169,19 @@ This section shows how to set up SSH tunnels to connect to remote databases from
 
 ### Oracle Autonomous Database (ADB) SSH Tunnel
 ```bash
-ssh -fNT -v -L 1522:10.180.2.238:1521 opc@168.138.10.135 -i "/Users/shadab/Downloads/OracleContent/Keys/mydemo_vcn.priv"
+ssh -fNT -v -L 1522:10.180.2.238:1521 opc@168.x.x.x -i "mydemo_vcn.priv"
 ```
 ### Local Oracle DB SSH Tunnel
 ```bash
-ssh -fNT -v -L 1521:10.180.2.158:1521 opc@168.138.10.135 -i "/Users/shadab/Downloads/OracleContent/Keys/mydemo_vcn.priv"
+ssh -fNT -v -L 1521:10.180.2.158:1521 opc@168.x.x.x -i "mydemo_vcn.priv"
 ```
 ### PostgreSQL SSH Tunnel
 ```bash
-ssh -fNT -v -L 5432:10.180.2.205:5432 opc@168.138.10.135 -i "/Users/shadab/Downloads/OracleContent/Keys/mydemo_vcn.priv"
+ssh -fNT -v -L 5432:10.180.2.205:5432 opc@168.x.x.x -i "mydemo_vcn.priv"
 ```
 ### MySQL SSH Tunnel
 ```bash
-ssh -fNT -v -L 3306:10.180.2.30:3306 opc@168.138.10.135 -i "/Users/shadab/Downloads/OracleContent/Keys/mydemo_vcn.priv"
+ssh -fNT -v -L 3306:10.180.2.30:3306 opc@168.x.x.x -i "mydemo_vcn.priv"
 ```
 ## API Usage Examples
 
@@ -195,7 +195,7 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -d host=localhost \
   -d port=5432 \
   -d username=ggadmin \
-  -d password="RAbbithole1234##" \
+  -d password="" \
   -d database=dvdrental \
   -d interval=1 \
   -d period=5 \
@@ -217,7 +217,7 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -d host=localhost \
   -d port=3306 \
   -d username=admin \
-  -d password="RAbbithole1234##" \
+  -d password="" \
   -d database=dvdrental \
   -d interval=1 \
   -d period=5 \
@@ -239,7 +239,7 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -d host=localhost \
   -d port=1521 \
   -d username=mpos \
-  -d password="abcdABCD1234##" \
+  -d password="" \
   -d database=T1DB04 \
   -d interval=1 \
   -d period=5 \
@@ -262,9 +262,9 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
 curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -k \
   -d dbtype=oracle \
-  -d host="(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=localhost))(connect_data=(service_name=g9b8049aad9c64c_spotlightdemo_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=no)))" \
+  -d host="(description= (retry_count=20)(retry_delay=3)(address=(protocol=tcps)(port=1522)(host=localhost))(connect_data=(service_name=****_s***_high.adb.oraclecloud.com))(security=(ssl_server_dn_match=no)))" \
   -d username=dvdrental \
-  -d password="RAbbithole1234##" \
+  -d password="" \
   -d interval=1 \
   -d period=5 \
   | jq .
