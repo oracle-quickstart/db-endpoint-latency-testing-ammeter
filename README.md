@@ -248,6 +248,10 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
 #### GUI
 <img width="376" alt="Screenshot 2025-07-05 at 11 42 13 PM" src="https://github.com/user-attachments/assets/880f58f8-3e09-40f1-9282-43341c7227a1" />
 
+- If both "port" and "database" (service_name) are provided in the form/API, it constructs a ConnectParams object using host, port (as int), and service_name, then calls oracledb.connect(user, password, params=ConnectParams(...)).
+
+- Otherwise, it falls back to oracledb.connect(user, password, dsn=host), allowing users to provide a complete DSN string in the "host" field.
+
 
 ---
 
@@ -267,6 +271,10 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
 ```
 #### GUI
 <img width="376" alt="Screenshot 2025-07-05 at 11 33 13 PM" src="https://github.com/user-attachments/assets/351897b5-2c8b-482b-8310-c6a0401d58d6" />
+
+- If both "port" and "database" (service_name) are provided in the form/API, it constructs a ConnectParams object using host, port (as int), and service_name, then calls oracledb.connect(user, password, params=ConnectParams(...)).
+
+- Otherwise, it falls back to oracledb.connect(user, password, dsn=host), allowing users to provide a complete DSN string in the "host" field.
 
 ---
 
