@@ -116,6 +116,66 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
 ### 📌 URL - HTTPS | HTTP 
 - Check Public or Private URLs for latency
 
+# Bonus
+## Stop and Start Shell Scripts (Linux and macOS) ##
+
+- `start.sh`: Activates the Python virtual environment and launches uvicorn with HTTPS, using the generated self-signed certificate.
+- `stop.sh`: Finds and terminates any uvicorn process running your app cleanly and safely.
+
+Stop the Delta App
+```bash
+bash stop.sh
+```
+
+Start the Delta App
+```bash
+bash start.sh
+```
+
+## Windows Build File (Beta: Not tested)
+
+Yes, you must first download (clone or extract) the GitHub repo to your Windows machine.
+
+__Instructions:__
+
+1. __Download the Repository__
+
+   - If you have Git installed:
+
+     - Open Command Prompt or PowerShell.
+     - Run:
+
+     ```javascript
+      git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
+      cd db-endpoint-latency-testing-ammeter
+     ```
+
+   - Or download the zip from the GitHub releases or code page, and extract all files to a folder.
+
+2. __Run the Build Script__
+
+   - In Command Prompt (NOT PowerShell), navigate to the project folder.
+   - Run:
+
+   ```javascript
+    build_windows.bat
+   ```
+
+   - This script will:
+
+     - Create a virtual environment
+     - Install dependencies
+     - Generate a self-signed SSL certificate
+     - Launch the app on [](https://localhost:8000)<https://localhost:8000>
+
+__Requirements on Windows:__
+
+- Python 3 (with pip)
+- openssl.exe in PATH (commonly included with Git Bash or available at [slproweb.com](https://slproweb.com/products/Win32OpenSSL.html))
+
+You do not need to manually install anything except Python and openssl; the script handles the rest.
+
+
 ## Contributing
 
 This project welcomes contributions from the community. Before submitting a pull request, please [review our contribution guide](./CONTRIBUTING.md)
