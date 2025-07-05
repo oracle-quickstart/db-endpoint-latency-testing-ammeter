@@ -1,22 +1,17 @@
 #!/bin/bash
 
-SSL_DIR="ssl"
-KEY_FILE="$SSL_DIR/key.pem"
-CERT_FILE="$SSL_DIR/cert.pem"
-
-if [[ ! -f ".venv/bin/activate" ]]; then
-    echo "❌ Python virtual environment not found. Please run build.sh first."
-    exit 1
+PID=$(ps aux | grep 'uvicorn app.main:app' | grep -v grep | awk '{print $2}')
+if [ -z "$PID" ]; then
+    echo "No uvicorn process found running app.main:app."
+    exit 0
 fi
 
-if [[ ! -f "$KEY_FILE" || ! -f "$CERT_FILE" ]]; then
-    echo "❌ SSL certificate or key missing. Please run build.sh first."
-    exit 1
+echo "Stopping uvicorn process (PID $PID)..."
+kill "$PID"
+sleep 2
+if ps -p $PID > /dev/null; then
+    echo "uvicorn (PID $PID) did not stop, sending SIGKILL."
+    kill -9 "$PID"
+else
+    echo "uvicorn stopped."
 fi
-
-echo "🔑 Activating virtual environment..."
-# shellcheck source=/dev/null
-source .venv/bin/activate
-
-echo "🚦 Starting uvicorn server with HTTPS (https://localhost:8000)"
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --ssl-keyfile "$KEY_FILE" --ssl-certfile "$CERT_FILE"
