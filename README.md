@@ -4,6 +4,48 @@ This project is a next-generation database endpoint latency benchmarking tool, p
 
 By running YOUR own query, this tool captures every millisecond: DNS, handshake, connection pool, DB engine, result marshaling—just as your app user sees it. This is true end-to-end, *application-perceived* latency and not just network latency.
 
+__How Latency Checks Work :__
+
+Latency is measured as the total time taken for each test cycle—which includes the connection, SQL execution, and result fetching in a single measurement.
+
+__Process per iteration (databases):__
+
+1. The timer starts just before the database driver begins a query cycle. This includes any necessary database connection and the execution of the test SQL (typically `SELECT 1` or a user-provided query).
+2. The timer stops immediately after the query results are fetched (i.e., after `cursor.fetchall()` returns).
+3. The elapsed time is recorded as the latency for that operation, in milliseconds.
+4. This measurement is appended to a list, so statistics (average, mean, p99, p90, stddev) can be calculated on all trials.
+
+This entire measured duration includes:
+
+- For engines like Oracle/PostgreSQL/MySQL/SQL Server:
+
+  - TCP network round-trip time (for connect & query)
+  - Any network stack or driver overhead
+  - Server-side session creation (if not pooled)
+  - Query parsing & planning
+  - SQL execution on server
+  - Fetching of any results (for basic `SELECT 1` it’s minimal)
+  - Transmission of the results back to the client
+
+The approach does not separate out the network portion vs. SQL execution: it is an end-to-end measurement for “open (if needed) + execute + fetch”.
+
+__For URL Latency Checks:__
+
+- The tool uses the Python `requests` library.
+
+- The timer starts immediately before `requests.get(url)` and stops immediately after the HTTP(S) response has been received (after the body is completely read).
+
+- The measured latency thus includes:
+
+  - DNS resolution (if needed)
+  - TCP/TLS handshake
+  - Network round-trip(s)
+  - Server processing time for the request
+  - Transmission of the full response body
+
+For both DBs and URL cases, it is a “total user-experienced latency” as seen by a typical client, not a fine-grained split of connection and query phases.
+
+
 
 __Key Features:__
 
@@ -288,6 +330,8 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
 #### GUI
 <img width="458" alt="Screenshot 2025-07-05 at 11 03 00 PM" src="https://github.com/user-attachments/assets/d97ee854-b7ff-4ee6-af5f-7c1fe127a281" />
 
+__Summary:__\
+The latency metric reported by this tool is the full end-to-end time required to execute the test operation—from just before the action is started to just after it completes—capturing the complete delay as experienced by a real client under typical network and server conditions.
 
 ---
 
