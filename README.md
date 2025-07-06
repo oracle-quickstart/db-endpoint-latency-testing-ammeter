@@ -1,10 +1,73 @@
-# DELTA - FastAPI based WebApp to Test Database Latency (NEW, 2025)
+# DELTA - Database Latency Checker Tool (NEW, 2025)
 
-This project is a secure, lightweight SaaS-like database latency testing tool with a Mobile GUI, along with REST API.
+This project is a next-generation database endpoint latency benchmarking tool, purpose-built for modern hybrid cloud and distributed application architecture. Its unique value comes from its ability to precisely measure, visualize, and diagnose both network round-trip latency and SQL execution time for a wide range of databases—including Oracle (on-prem and Autonomous/ADB), PostgreSQL, MySQL, and even HTTP/HTTPS endpoints. 
 
-https://github.com/user-attachments/assets/74497e35-a85b-4051-bee0-99a3c1ed67d0
+By running YOUR own query, this tool captures every millisecond: DNS, handshake, connection pool, DB engine, result marshaling—just as your app user sees it. This is true end-to-end, *application-perceived* latency and not just network latency.
+
+
+__Key Features:__
+
+- __Granular Latency Breakdown:__ For every test, the tool separately measures the network connect time and the server-side SQL execution time. This allows you to see whether delays come from raw network/infrastructure, from database query planning/execution, or both.
+- __End-to-End and Per-Operation Metrics:__ Outputs both total and component latencies for each query iteration, viewable in tables and visualized in real-time charts.
+- __Live, Interactive UI:__ Includes a mobile-friendly GUI for interactive testing, as well as a full REST API for automation and integration with CI/CD or monitoring workflows.
+- __Cloud & Hybrid-Ready:__ Designed for real-world topologies, it works with databases anywhere—public cloud (AWS, OCI, GCP, Azure), private datacenters, or in hybrid scenarios.
+- __Easy Secure Remote Testing:__ Supports SSH tunnels so you can safely benchmark against remote cloud VMs or databases not directly exposed to the public internet.
+- __Flexible Connection Patterns:__ Accepts detailed connection parameters or industry-standard DSN strings, supporting advanced Oracle topologies and features like TCPS (TLS) secure connections and failover.
+- __Custom SQL Query Support:__ Test both trivial connectivity and the performance/latency of real, business-relevant workload queries.
+- __Cross-Database Comparison:__ Enables performance comparisons across database types and clouds, supporting architectural and vendor selection.
+- __Open, Extensible, and Developer-Friendly:__ FastAPI/REST backend, Python client code for scripting, and a well-documented interface for extension to additional DB engines or metrics.
+
+__How It Helps:__ 
+
+This tool equips architects, SREs, DBAs, and developers to:
+
+- Quantify and visualize the real impact of hybrid or multi-cloud designs, by showing where latency is introduced in split-architecture applications.
+- Simulate user experience for apps where the app and database reside in different data centers, clouds, or geographies.
+- Optimize architecture design and deployment decisions by differentiating between network-related and DB-query-related bottlenecks.
+- Validate and baseline connectivity, driver, TLS, and authentication configurations for complex, regulated, or highly available environments.
+- Inform SLAs and help justify needed investments in network or database tuning.
+
+
+## DELTA - Database Endpoint Latency Testing Ammeter
+![image](https://github.com/user-attachments/assets/2fbb6927-0f48-4a85-9ae6-74efb63e6ef0)
+
+
+https://github.com/user-attachments/assets/1fdf1e00-21bc-4be2-9815-a253a64df796
 
 Built with ❤️ using FastAPI.  
+
+##  🔌 Databases Supported
+
+### 📌 Oracle DB  
+- Amazon RDS for Oracle
+- OCI Autonomous Database (without Wallet TLS)
+- OCI Base Database Service
+- OCI Exadata Cloud Service - Dedicated
+- OCI Exascale Service- Dedicated
+- Oracle Database@Azure
+- Oracle Database@GCP
+- Oracle Database@AWS
+- Oracle Database installed on OnPremises or on any other cloud provider in a VM
+
+### 📌 PostgreSQL
+- Amazon RDS Postgres
+- Amazon RDS Aurora Postgres
+- OCI PostgreSQL
+- PostgreSQL installed on OnPremises or on any other cloud provider in a VM
+
+### 📌 MySQL  
+- Amazon RDS MySQL
+- Amazon RDS Aurora MySQL
+- Heatwave@AWS
+- OCI MySQL Heatwave
+- MySQL installed on OnPremises or on any other cloud provider in a VM
+
+### 📌 URL - HTTPS | HTTP 
+- Check Public or Private URLs for latency
+
+## Pre-Requisites ##
+
+`Python >=3.9`
 
 ## 1. Clone Repository ##
 ```bash
@@ -18,11 +81,7 @@ export APP_ADMIN_PASS='abcd1234'
 ```bash
  bash build.sh
 ```
-## 4. Launch the Web App; Only required when you restart the App ##
-```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
-## 5. Open the DB Latency app in our browser ##
+## 4. Open the DB Latency app in our browser ##
 ```
 https://localhost:8000
 ```
@@ -33,7 +92,7 @@ https://localhost:8000
 <img width="655" alt="Screenshot 2025-07-04 at 2 49 25 AM" src="https://github.com/user-attachments/assets/c15b53dc-e138-4448-9777-e980db4354f0" />
 
 
-## 6. Default SQL : API Usage via Curl/CLI MySQL Example ##
+## 5. Default SQL : API Usage via Curl/CLI MySQL Example ##
 ```bash
 curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -k \
@@ -47,7 +106,7 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   -d period=10 \
   | jq .
 ```
-## 7. Custom User SQL : API Usage via Curl/CLI MySQL Example ##
+## 6. Custom User SQL : API Usage via Curl/CLI MySQL Example ##
 
 To test with a custom SQL query from the command line, simply add a -d custom_sql="YOUR SQL HERE" parameter to your curl command, like this:
 
@@ -80,32 +139,8 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
   
 - Custom queries that are slower will always yield fewer completed test cycles in a fixed period. Hence use Custom queries carefully.
 
-##  🔌 Databases Supported
 
-### 📌 Oracle DB  
-- Amazon RDS Oracle
-- OCI Autonomous Database
-- OCI VMDB
-- OCI Exadata Cloud Service
-- Oracle Database On-Premise
-
-### 📌 PostgreSQL
-- Amazon RDS Postgres
-- Amazon RDS Aurora Postgres
-- Postgres On-premise 
-
-### 📌 MySQL  
-- Amazon RDS MySQL
-- Amazon RDS Aurora MySQL
-- OCI MySQL Database Service
-- OCI MySQL Heatwave
-- MySQL On-Premise
-
-### 📌 URL - HTTPS | HTTP 
-- Check Public or Private URLs for latency
-
-# Bonus
-## Stop and Start Shell Scripts (Linux and macOS) ##
+## 7. Stop and Start Shell Scripts (Linux and macOS) ##
 
 - `start.sh`: Activates the Python virtual environment and launches uvicorn with HTTPS, using the generated self-signed certificate.
 - `stop.sh`: Finds and terminates any uvicorn process running your app cleanly and safely.
@@ -118,46 +153,6 @@ Start the Delta App
 ```bash
 bash start.sh
 ```
-## Windows Build File (Beta: Not tested)
-
-Yes, you must first download (clone or extract) the GitHub repo to your Windows machine.
-
-__Instructions:__
-
-1. __Download the Repository__
-
-   - If you have Git installed:
-
-     - Open Command Prompt or PowerShell.
-     - Run:
-
-    ```javascript
-      git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
-      cd db-endpoint-latency-testing-ammeter
-     ```
-   - Or download the zip from the GitHub releases or code page, and extract all files to a folder.
-
-2. __Run the Build Script__
-
-   - In Command Prompt (NOT PowerShell), navigate to the project folder.
-   - Run:
-
-  ```javascript
-    build_windows.bat
-   ```
-   - This script will:
-
-     - Create a virtual environment
-     - Install dependencies
-     - Generate a self-signed SSL certificate
-     - Launch the app on [](https://localhost:8000)<https://localhost:8000>
-
-__Requirements on Windows:__
-
-- Python 3 (with pip)
-- openssl.exe in PATH (commonly included with Git Bash or available at [slproweb.com](https://slproweb.com/products/Win32OpenSSL.html))
-
-You do not need to manually install anything except Python and openssl; the script handles the rest.
 
 ---
 
@@ -295,6 +290,48 @@ curl -u admin:abcd1234 -X POST https://localhost:8000/api/test-latency \
 
 
 ---
+
+# Bonus
+## Windows Build File (Beta: Not tested)
+
+Yes, you must first download (clone or extract) the GitHub repo to your Windows machine.
+
+__Instructions:__
+
+1. __Download the Repository__
+
+   - If you have Git installed:
+
+     - Open Command Prompt or PowerShell.
+     - Run:
+
+    ```javascript
+      git clone https://github.com/oracle-quickstart/db-endpoint-latency-testing-ammeter.git
+      cd db-endpoint-latency-testing-ammeter
+     ```
+   - Or download the zip from the GitHub releases or code page, and extract all files to a folder.
+
+2. __Run the Build Script__
+
+   - In Command Prompt (NOT PowerShell), navigate to the project folder.
+   - Run:
+
+  ```javascript
+    build_windows.bat
+   ```
+   - This script will:
+
+     - Create a virtual environment
+     - Install dependencies
+     - Generate a self-signed SSL certificate
+     - Launch the app on [](https://localhost:8000)<https://localhost:8000>
+
+__Requirements on Windows:__
+
+- Python 3 (with pip)
+- openssl.exe in PATH (commonly included with Git Bash or available at [slproweb.com](https://slproweb.com/products/Win32OpenSSL.html))
+
+You do not need to manually install anything except Python and openssl; the script handles the rest.
 
 ## Contributing
 
